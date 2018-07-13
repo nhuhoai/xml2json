@@ -20,6 +20,7 @@ function xmlToArray($xml, $options = array()) {
     $defaults = array(
         'withNamespace' => true,    //keep the namespace in the output
         'namespaceSeparator' => ':',//you may want this to be something other than a colon
+        'namespaces' => array(),    //If children nodes have a different namespace than the parent, add it here
         'attributePrefix' => '@',   //to distinguish between attributes and nodes with the same name
         'alwaysArray' => array(),   //array of xml tag names which should always become arrays
         'autoArray' => true,        //only create arrays for tags which appear more than once
@@ -33,6 +34,7 @@ function xmlToArray($xml, $options = array()) {
     if (!array_key_exists('', $namespaces)) {
       $namespaces[''] = null; //add base (empty) namespace
     }
+    $namespaces = array_merge($options["namespaces"], $namespaces);
 
     //get attributes from all namespaces
     $attributesArray = array();
