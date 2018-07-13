@@ -18,6 +18,7 @@
 
 function xmlToArray($xml, $options = array()) {
     $defaults = array(
+        'withNamespace' => true,    //keep the namespace in the output
         'namespaceSeparator' => ':',//you may want this to be something other than a colon
         'attributePrefix' => '@',   //to distinguish between attributes and nodes with the same name
         'alwaysArray' => array(),   //array of xml tag names which should always become arrays
@@ -59,7 +60,13 @@ function xmlToArray($xml, $options = array()) {
             if ($options['keySearch']) $childTagName =
                     str_replace($options['keySearch'], $options['keyReplace'], $childTagName);
             //add namespace prefix, if any
-            if ($prefix) $childTagName = $prefix . $options['namespaceSeparator'] . $childTagName;
+            if ($prefix) {
+                if ($options['withNamespace']) {
+                    $childTagName = $prefix . $options['namespaceSeparator'] . $childTagName;
+                } else {
+                    $childTagName = $childTagName;
+                }
+            }
 
             if (!isset($tagsArray[$childTagName])) {
                 //only entry with this key
